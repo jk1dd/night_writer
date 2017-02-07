@@ -1,20 +1,26 @@
 require './lib/file_reader'
+require './lib/dictionary'
 require 'pry'
 
 class NightWriter
 attr_accessor :alphabet, :message
 
   def initialize(message="")
-    @alphabet = {"a" => ["0.","..",".."], "b" => ["0.","0.",".."], "c" => ["00","..",".."], "d" => ["00",".0",".."],
-   "e" => ["0.",".0",".."], "f" => ["00","0.",".."], "g" => ["00","00",".."], "h" => ["0.","00",".."],
-   "i" => [".0","0.",".."], "j" => [".0","00",".."], "k" => ["0.","..","0."], "l" => ["0.","0.","0."],
-   "m" => ["00","..","0."], "n" => ["00",".0","0."], "o" => ["0.",".0","0."], "p" => ["00","0.","0."],
-   "q" => ["00","00","0."], "r" => ["0.","00","0."], "s" => [".0","0.","0."], "t" => [".0","00","0."],
-   "u" => ["0.","..","00"], "v" => ["0.","0.","00"], "w" => [".0","00",".0"], "x" => ["00","..","00"],
-   "y" => ["00",".0","00"], "z" => ["0.",".0","00"], "!" => ["..","00","0."], "'" => ["..","..","0."],
-   "," => ["..","0.",".."], "-" => ["..","..","00"], "." => ["..","00",".0"], "?" => ["..","0.","00"],
-   "capital" => ["..", "..", ".0"], "number" => [".0", ".0", "00"], " " => ["..","..",".."]}
-   @message = message
+    @dictionary = Dictionary.new
+    @alphabet = @dictionary.dictionary
+    @message = message
+  end
+
+  def letter?(lookAhead)
+  lookAhead =~ /[[:alpha:]]/
+  end
+
+  def capital? (letter)
+    if letter?(letter)
+      if letter == letter.upcase
+        return true
+      end
+    end
   end
 
   def triplicate
@@ -28,8 +34,15 @@ attr_accessor :alphabet, :message
   def top_line
     top_string = ""
     message.split('').each do |char|
-      top_string += alphabet[char][0]
-        # binding.pry
+      if letter?(char)
+        if char == char.upcase
+          top_string += alphabet["capital"][0] + alphabet[char.downcase][0]
+        else
+          top_string += alphabet[char][0]
+        end
+      else
+        top_string += alphabet[char][0]
+      end
     end
     top_string
   end
@@ -37,7 +50,15 @@ attr_accessor :alphabet, :message
   def mid_line
     mid_string = ""
     message.split('').each do |char|
-      mid_string += alphabet[char][1]
+      if letter?(char)
+        if char == char.upcase
+          mid_string += alphabet["capital"][1] + alphabet[char.downcase][1]
+        else
+          mid_string += alphabet[char][1]
+        end
+      else
+        mid_string += alphabet[char][1]
+      end
     end
     mid_string
   end
@@ -45,12 +66,38 @@ attr_accessor :alphabet, :message
   def bottom_line
     bottom_string = ""
     message.split('').each do |char|
-      bottom_string += alphabet[char][2]
+      if letter?(char)
+        if char == char.upcase
+          bottom_string += alphabet["capital"][2] + alphabet[char.downcase][2]
+        else
+          bottom_string += alphabet[char][2]
+        end
+      else
+        bottom_string += alphabet[char][2]
+      end
     end
     bottom_string
   end
 
-end
+  def combine_lines
+    combined_lines = "#{top_line}\n#{mid_line}\n#{bottom_line}"
+  end
 
-new = NightWriter.new("hello")
-puts new.top_line + "\n" + new.mid_line + "\n" + new.bottom_line
+  def count_capitals
+    message.chars.count do |char|
+      capital?(char)
+    end
+  end
+
+  def count_non_capitals
+    message.chars.count do |char|
+      !capital?(char)
+    end
+  end
+
+  def count_total_spaces
+    (count_capitals * 2) + count_non_capitals
+  end
+
+end
+#new = NightWriter.new("hellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohello")
