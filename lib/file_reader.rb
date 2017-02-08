@@ -1,8 +1,10 @@
+require 'pry'
 class FileReader
   def read
     filename = ARGV[0]
     string = File.read(filename)
     string.chomp
+    # string
   end
 
 

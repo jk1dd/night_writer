@@ -97,6 +97,7 @@ attr_accessor :alphabet, :message
   end
 
   def joiner
+
     joined_text = ''
     (@split_lines.length - 1).times do |i|
       @split_lines.each do |line|
@@ -109,7 +110,7 @@ end
 file_write = FileWriter.new
 file_read = FileReader.new
 new_night = NightWriter.new(file_read.read)
-new_night.combine_lines
-new_night.splitter
-write_string = new_night.joiner
+write_string = new_night.combine_lines
+# new_night.splitter
+# write_string = new_night.joiner
 file_write.write_braille(write_string)
