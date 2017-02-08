@@ -106,6 +106,7 @@ attr_accessor :alphabet, :message
     joined_text
   end
 end
+=begin
 file_write = FileWriter.new
 file_read = FileReader.new
 new_night = NightWriter.new(file_read.read)
@@ -113,3 +114,4 @@ new_night.combine_lines
 new_night.splitter
 write_string = new_night.joiner
 file_write.write_braille(write_string)
+=end
