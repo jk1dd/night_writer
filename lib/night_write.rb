@@ -1,14 +1,17 @@
 require './lib/file_reader'
+require './lib/file_writer'
 require './lib/dictionary'
 require 'pry'
 
 class NightWriter
 attr_accessor :alphabet, :message
 
-  def initialize(message="")
+  def initialize(message='')
     @dictionary = Dictionary.new
     @alphabet = @dictionary.dictionary
     @message = message
+    @all_lines = []
+    @split_lines = []
   end
 
   def letter?(lookAhead)
@@ -44,6 +47,7 @@ attr_accessor :alphabet, :message
         top_string += alphabet[char][0]
       end
     end
+    @all_lines << top_string
     top_string
   end
 
@@ -60,6 +64,7 @@ attr_accessor :alphabet, :message
         mid_string += alphabet[char][1]
       end
     end
+    @all_lines << mid_string
     mid_string
   end
 
@@ -76,6 +81,7 @@ attr_accessor :alphabet, :message
         bottom_string += alphabet[char][2]
       end
     end
+    @all_lines << bottom_string
     bottom_string
   end
 
@@ -83,21 +89,27 @@ attr_accessor :alphabet, :message
     combined_lines = "#{top_line}\n#{mid_line}\n#{bottom_line}"
   end
 
-  def count_capitals
-    message.chars.count do |char|
-      capital?(char)
+  def splitter
+    @all_lines.each do |line|
+      @split_lines << line.chars.each_slice(80).to_a.map { |slice| slice.join }
     end
+    @split_lines
   end
 
-  def count_non_capitals
-    message.chars.count do |char|
-      !capital?(char)
+  def joiner
+    joined_text = ''
+    (@split_lines.length - 1).times do |i|
+      @split_lines.each do |line|
+        joined_text += line[i] + "\n"
+      end
     end
+    joined_text
   end
-
-  def count_total_spaces
-    (count_capitals * 2) + count_non_capitals
-  end
-
 end
-#new = NightWriter.new("hellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohellohello")
+file_write = FileWriter.new
+file_read = FileReader.new
+new_night = NightWriter.new(file_read.read)
+new_night.combine_lines
+new_night.splitter
+write_string = new_night.joiner
+file_write.write_braille(write_string)

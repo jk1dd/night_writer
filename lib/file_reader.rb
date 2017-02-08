@@ -1,11 +1,8 @@
 class FileReader
-
-  def initialize(message)
-  end
-
   def read
     filename = ARGV[0]
-    File.read(filename)
+    string = File.read(filename)
+    string.chomp
   end
 
 

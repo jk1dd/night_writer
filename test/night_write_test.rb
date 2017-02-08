@@ -83,28 +83,17 @@ class NightWriterTest < Minitest::Test
     assert_equal "..0.0.0.0.0...\n..00.00.0..0..\n.0....0.0.0...", new_night.combine_lines
   end
 
-  def test_can_it_count_capital_letters
-    new_night = NightWriter.new("Hello World My Name Is")
-    assert_equal 5, new_night.count_capitals
+  def test_can_array_be_split_up
+    new_night = NightWriter.new("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    new_night.combine_lines
+    assert_equal ["0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.", "0."], new_night.splitter[0]
   end
 
-  def test_can_it_count_non_uppercase_characters
-    new_night = NightWriter.new("ABCdefghijk!!??")
-    assert_equal 12, new_night.count_non_capitals
+  def test_can_it_be_joined
+    new_night = NightWriter.new("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    new_night.combine_lines
+    new_night.splitter
+    assert_equal "0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.\n................................................................................\n................................................................................\n0.\n..\n..\n", new_night.joiner
   end
-
-  def test_can_it_count_total_space_needed_for_all_chars
-    new_night = NightWriter.new("Hello")
-    assert_equal 6, new_night.count_total_spaces
-  end
-
-
-  def test_can_it_split_long_strings_into_80_chars
-    skip
-    new_night = NightWriter.new(input_long_file)
-
-    assert_equal 80, new_night.slicer[0].length
-  end
-
 
 end
