@@ -18,7 +18,7 @@ class NightReaderTest < Minitest::Test
   end
 
   def input_single_character_text_file
-    File.open("./separate_line_char.txt", "r").read
+    File.open("./data/separate_line_char.txt", "r").read
   end
 
   def test_does_class_exist
@@ -29,9 +29,6 @@ class NightReaderTest < Minitest::Test
     night_read_sample = NightReader.new(input_lowercase_text_file)
     assert_equal "0.0.0.0.0.\n00.00.0..0\n....0.0.0.", night_read_sample.message
   end
-  # def test_can_it_find_capitals
-  #   assert_equal "...0\n..00\n.00.", @nr.splitter
-  # end
 
   def test_can_it_split_by_newline
     night_read_sample = NightReader.new(input_lowercase_text_file)
@@ -48,8 +45,14 @@ class NightReaderTest < Minitest::Test
     assert_equal "hello", night_read_sample.convert_braille_to_text
   end
 
-  def test_can_it_convert_long_lowercase_braille_to_plain
+  def test_can_it_convert_long_braille_with_upcase_to_plain
     night_read_sample = NightReader.new(File.open("./data/braille_sample.txt", "r").read)
-    assert_equal "Test sentence bla bal bla bal bal balbalblablalb.", night_read_sample.convert_braille_to_text
+    assert_equal "Test sentence bla bal bla bal bal balbalblablalb.", night_read_sample.sanitize
   end
+
+  def test_can_it_write_capitals
+    night_read_sample = NightReader.new(File.open("./data/braille_sample.txt", "r").read)
+    assert_equal "Test sentence bla bal bla bal bal balbalblablalb.", night_read_sample.sanitize
+  end
+
 end

@@ -26,20 +26,12 @@ attr_accessor :alphabet, :message
     end
   end
 
-  def triplicate
-    final_message = message
-    2.times do
-      final_message += message
-    end
-    final_message
-  end
-
   def top_line
     top_string = ""
     message.split('').each do |char|
       if letter?(char)
         if char == char.upcase
-          top_string += alphabet["capital"][0] + alphabet[char.downcase][0]
+          top_string += alphabet["^"][0] + alphabet[char.downcase][0]
         else
           top_string += alphabet[char][0]
         end
@@ -56,7 +48,7 @@ attr_accessor :alphabet, :message
     message.split('').each do |char|
       if letter?(char)
         if char == char.upcase
-          mid_string += alphabet["capital"][1] + alphabet[char.downcase][1]
+          mid_string += alphabet["^"][1] + alphabet[char.downcase][1]
         else
           mid_string += alphabet[char][1]
         end
@@ -73,7 +65,7 @@ attr_accessor :alphabet, :message
     message.split('').each do |char|
       if letter?(char)
         if char == char.upcase
-          bottom_string += alphabet["capital"][2] + alphabet[char.downcase][2]
+          bottom_string += alphabet["^"][2] + alphabet[char.downcase][2]
         else
           bottom_string += alphabet[char][2]
         end
@@ -97,7 +89,6 @@ attr_accessor :alphabet, :message
   end
 
   def joiner
-
     joined_text = ''
     (@split_lines.length - 1).times do |i|
       @split_lines.each do |line|
@@ -106,11 +97,20 @@ attr_accessor :alphabet, :message
     end
     joined_text
   end
+
+  def starter
+    if message.length >= 40
+      file_write = FileWriter.new
+      combine_lines
+      splitter
+      file_write.write_braille(joiner)
+    else
+      file_write = FileWriter.new
+      file_write.write_braille(combine_lines)
+    end
+  end
 end
-file_write = FileWriter.new
-file_read = FileReader.new
-new_night = NightWriter.new(file_read.read)
-write_string = new_night.combine_lines
-# new_night.splitter
-# write_string = new_night.joiner
-file_write.write_braille(write_string)
+
+# file_read = FileReader.new
+# new_night = NightWriter.new(file_read.read)
+# new_night.starter

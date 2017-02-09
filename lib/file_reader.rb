@@ -7,6 +7,12 @@ class FileReader
     # string
   end
 
+  def braille_read
+    filename = ARGV[0]
+    string = File.read(filename)
+    string
+  end
+
 
 
 #   plain_file = File.open(ARGV[0], "r")

@@ -1,5 +1,6 @@
 require './lib/file_reader'
 require './lib/dictionary'
+require './lib/file_writer'
 
 class NightReader
 attr_reader :alphabet, :message
@@ -19,10 +20,8 @@ attr_reader :alphabet, :message
     splitter.each do |line|
       array << line.scan(/../)
     end
-    # binding.pry
-    # until array is empty then do these things
     separated_values = []
-    until array.empty? do
+    until array.empty?
       separated_values << array[0].zip(array[1], array[2])
       array.shift(3)
     end
@@ -31,11 +30,22 @@ attr_reader :alphabet, :message
       alphabet.key(value)
     end
     joined_letters.join
-    # once these things are done, redefine array.shift 3x
   end
+
+  def sanitize
+    convert_braille_to_text.gsub!(/\^./) { |letter| letter.delete('^').upcase }
+  end
+
+  def starter
+    file_write = FileWriter.new
+    splitter
+    convert_braille_to_text
+    file_write.write_braille(sanitize)
+  end
+
 
 end
 
-
 # file_read = FileReader.new
-# other_way = NightReader.new(file_read.read).splitter
+# new_night_reader = NightReader.new(file_read.braille_read)
+# new_night_reader.starter

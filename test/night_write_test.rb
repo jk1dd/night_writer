@@ -24,7 +24,6 @@ class NightWriterTest < Minitest::Test
   def test_do_we_have_input_string
     assert_equal "hello\n", @nw.message
   end
-  #
 
   def test_did_hash_load
     assert_equal Hash, @nw.alphabet.class
@@ -38,10 +37,6 @@ class NightWriterTest < Minitest::Test
     assert_equal ["0.","..",".."], @nw.alphabet["a"]
   end
 
-  def test_can_it_output_three_lines
-    assert_equal "hello\nhello\nhello\n", @nw.triplicate
-	end
-
 	def test_can_it_access_message
 		assert_equal "hello\n", @nw.message
 	end
@@ -50,7 +45,6 @@ class NightWriterTest < Minitest::Test
     new_night = NightWriter.new("hello") # this doens't work
 		assert_equal "0.0.0.0.0.", new_night.top_line
 	end
-
 
 	def test_can_it_return_second_third # this also doesn't work
     new_night = NightWriter.new("hello")
