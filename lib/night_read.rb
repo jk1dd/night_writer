@@ -46,6 +46,8 @@ attr_reader :alphabet, :message
 
 end
 
-# file_read = FileReader.new
-# new_night_reader = NightReader.new(file_read.braille_read)
-# new_night_reader.starter
+if __FILE__ == $0
+file_read = FileReader.new
+new_night_reader = NightReader.new(file_read.braille_read)
+new_night_reader.starter
+end

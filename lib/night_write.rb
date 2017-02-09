@@ -111,6 +111,8 @@ attr_accessor :alphabet, :message
   end
 end
 
-# file_read = FileReader.new
-# new_night = NightWriter.new(file_read.read)
-# new_night.starter
+if __FILE__ == $0
+file_read = FileReader.new
+new_night = NightWriter.new(file_read.read)
+new_night.starter
+end
